@@ -68,12 +68,11 @@ class OrbitSim extends Project {
         this.mousePos = new Anchor();
         this.planets = [new Planet(new Anchor(this.width / 2, this.height / 2), this.height / 100, this.two, this)];
         this.moons = [new Moon(new Anchor(this.width / 4, this.height / 2), new Anchor(0, 1.5), this.height / 350, this.two, this.planets, this)]
-        this.ui = new Two.Text(`Moons remaining: ${this.moons.length}`, 10, 80, { alignment: "left", size: this.height / 15 });
+        this.ui = new Two.Text(`Planets remaining: ${this.moons.length}`, 10, 20, { alignment: "left", size: this.height / 15 });
         this.two.add(this.ui);
-        this.two.add(new Two.Text(`Hold and drag to spawn a moon...`, 10, 50, { alignment: "left", size: this.height / 15 }));
     }
     update() {
-        this.ui.value = `Moons remaining: ${this.moons.length}`;
+        this.ui.value = `Planets remaining: ${this.moons.length}`;
     }
     removeMoon(moon) {
         let index = this.moons.indexOf(moon);

@@ -1,6 +1,15 @@
 import { Noise } from 'noisejs';
-import Two from 'twojs-ts';
+import Two, { Anchor } from 'twojs-ts';
 import Project from './Project';
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+}
 
 class PathFinder extends Project {
     init() {
@@ -10,15 +19,15 @@ class PathFinder extends Project {
         this.state = "drawing";
         this.algorithm = null
         this.grid = [];
-        if (!this.size){
-            this.size = 10;
+        if (!this.size) {
+            this.size = 20;
             this.algorithmState = "justStarted";
             this.intervalFunction = this.draw;
             this.gridHeight = this.height / this.size;
             this.gridWidth = this.width / this.size;
             this.lineGroup = new Two.Group();
         }
-        if(this.lineGroup.children.length < this.gridWidth * this.gridHeight){
+        if (this.lineGroup.children.length < this.gridWidth * this.gridHeight) {
             for (let i = 0; i < this.gridWidth; i++) {
                 this.grid.push([]);
                 let line = new Two.Line(i * this.size, 0, i * this.size, this.height);
@@ -30,18 +39,33 @@ class PathFinder extends Project {
                     this.lineGroup.add(line);
                 }
             }
-        }else{
+        } else {
             for (let i = 0; i < this.gridWidth; i++) {
                 this.grid.push([]);
             }
         }
-        
+
         this.two.add(this.lineGroup);
     }
     changeState(e) {
         if (e.code === "KeyS") {
             if (this.start && this.end && !this.algorithm) {
                 this.algorithm = this.greedyBestFirstSearch;
+                this.algorithmState = "justStarted";
+            }
+        } else if (e.code === "KeyQ") {
+            if (!this.start && !this.end && !this.algorithm) {
+                this.algorithm = this.recursiveDivision;
+                this.algorithmState = "justStarted";
+            }
+        } else if (e.code === "KeyP") {
+            if (!this.start && !this.end && !this.algorithm) {
+                this.algorithm = this.noiseGrid;
+                this.algorithmState = "justStarted";
+            }
+        } else if (e.code === "KeyG") {
+            if (!this.start && !this.end && !this.algorithm) {
+                this.algorithm = this.depthFirstSearchMaze;
                 this.algorithmState = "justStarted";
             }
         }
@@ -54,22 +78,12 @@ class PathFinder extends Project {
         else if (e.code === "KeyR") {
             this.state = "resetting";
             this.init();
-        } else if (e.code === "KeyQ") {
-            if (!this.start && !this.end && !this.algorithm) {
-                this.algorithm = this.recursiveDivision;
-                this.algorithmState = "justStarted";
-            }
-        } else if (e.code === "KeyP") {
-            if (!this.start && !this.end && !this.algorithm) {
-                this.algorithm = this.noiseGrid;
-                this.algorithmState = "justStarted";
-            }
         }
     }
     makeRectangleRelativeToMouse() {
         return this.two.makeRectangle(
-            Math.floor(this.mx / this.size) * this.size + this.size / 2,
-            Math.floor(this.my / this.size) * this.size + this.size / 2,
+            Math.floor((this.mx / this.size) % this.gridWidth) * this.size + this.size / 2,
+            Math.floor((this.my / this.size) % this.gridHeight) * this.size + this.size / 2,
             this.size,
             this.size
         );
@@ -125,8 +139,8 @@ class PathFinder extends Project {
         }
 
     }
-    getNeighbours(node) {
-        let [x, y] = this.getIndexesOfRectangle(node.currentNode);
+    getSurroundingIndexes(node) {
+        let [x, y] = this.getIndexesOfRectangle(node);
         const tmp = [];
         if (x !== 0)
             tmp.push([-1, 0])
@@ -136,6 +150,11 @@ class PathFinder extends Project {
             tmp.push([0, 1])
         if (y !== 0)
             tmp.push([0, -1])
+        return tmp;
+    }
+    getNeighbours(node) {
+        let [x, y] = this.getIndexesOfRectangle(node.currentNode);
+        const tmp = this.getSurroundingIndexes(node.currentNode);
         let neighbours = []
         tmp.forEach((coord) => {
             if (!this.grid[x + coord[0]][coord[1] + y]) {
@@ -302,6 +321,78 @@ class PathFinder extends Project {
                 }
             }
             this.i++;
+        } else {
+            this.algorithm = null;
+        }
+    }
+    getNeighbourForDepthFirstSearch(node) {
+        let [x, y] = node;
+        let tmpRect = this.makeGridRect(x, y);
+        const tmp = this.getSurroundingIndexes(tmpRect);
+        this.two.remove(tmpRect);
+        let neighbours = []
+        tmp.forEach((coord) => {
+            let [xx, yy] = [x + coord[0], coord[1] + y];
+            if (this.grid[xx][yy]) {
+                if (this.isAdjacentToOtherNodes([xx, yy]) <= 1)
+                    neighbours.push([xx, yy]);
+            }
+        });
+        shuffleArray(neighbours);
+        return neighbours;
+    }
+    isAdjacentToOtherNodes(node) {
+        let [x, y] = node;
+        let tmpRect = this.makeGridRect(x, y);
+        const tmp = this.getSurroundingIndexes(tmpRect);
+        this.two.remove(tmpRect);
+        if (x !== 0 && y !== 0)
+            tmp.push([-1, -1])
+        if (x !== this.gridWidth - 1 && y !== this.gridHeight - 1)
+            tmp.push([1, 1])
+        if (x !== 0 && y !== this.gridHeight - 1)
+            tmp.push([-1, 1])
+        if (x !== this.gridWidth - 1 && y !== 0)
+            tmp.push([1, -1])
+        let condition = 0;
+        let lastAdjecentNode = null;
+        tmp.forEach((coord) => {
+            let node = this.grid[x + coord[0]][coord[1] + y];
+            if (!node) {
+                if (lastAdjecentNode) {
+                    if (new Anchor(x + coord[0], coord[1] + y).distanceTo(lastAdjecentNode) > 1)
+                        condition++;
+                }
+                else {
+                    condition++;
+                    lastAdjecentNode = new Anchor(x + coord[0], coord[1] + y);
+                }
+            }
+        });
+        return condition;
+    }
+    depthFirstSearchMaze() {
+        if (this.algorithmState === "justStarted") {
+            this.algorithmState = "mazeGenerating";
+            for (let i = 0; i < this.gridWidth; i++) {
+                for (let j = 0; j < this.gridHeight; j++) {
+                    this.grid[i][j] = this.makeGridRect(i, j);
+                    this.grid[i][j].fill = "black";
+                }
+            }
+            this.stack = [];
+            let x = this.rand(0, this.gridWidth - 1);
+            let y = this.rand(0, this.gridHeight - 1);
+            this.stack.push([x, y]);
+        } else if (this.algorithmState === "mazeGenerating" && this.stack.length) {
+            this.current = this.stack[this.stack.length - 1];
+            this.stack.pop();
+            if (this.isAdjacentToOtherNodes(this.current) <= 1) {
+                let [x, y] = this.current;
+                this.two.remove(this.grid[x][y]);
+                this.grid[x][y] = null;
+                this.getNeighbourForDepthFirstSearch(this.current).forEach(element => this.stack.push(element));
+            }
         } else {
             this.algorithm = null;
         }

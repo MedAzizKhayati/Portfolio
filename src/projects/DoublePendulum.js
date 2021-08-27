@@ -6,7 +6,7 @@ class DoublePendulum extends Project {
         this.intervalFunction = this.controlPendulum;
         this.m1 = this.m2 = this.height / 30;
         this.r1 = this.r2 = this.height / 4;
-        this.g = 0.05;
+        this.g = 0.07;
         this.a1 = [3.9, 0, 0];
         this.a2 = [2.5, 0, 0];
         this.path = [];
@@ -21,8 +21,8 @@ class DoublePendulum extends Project {
         this.firstLine.vertices = [this.position, this.masses[0].translation];
         this.secondLine.vertices = [ this.masses[1].translation, this.masses[0].translation];
         this.two.add(this.masses);
-        this.text = new Two.Text("Hold and drag to change masses' position..", 10, 30, {alignment: "left", size: this.height / 20});
-        this.two.add(this.text);
+        // this.text = new Two.Text("Hold and drag to change masses' position..", 10, 30, {alignment: "left", size: this.height / 20});
+        // this.two.add(this.text);
     }
     controlPendulum(){
         let mousePos = new Anchor(this.mx, this.my);

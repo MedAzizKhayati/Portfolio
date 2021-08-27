@@ -1,43 +1,167 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  /*font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;*/
+  font-family: 'PT Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font: 14px "Century Gothic", Futura, sans-serif;
+  /*font: 14px "Century Gothic", Futura, sans-serif;*/
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0)), url(assets/home/home-background.png);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-.container {
-  margin-left: 15%;
-  margin-right: 15%;
-  text-align: center;
+.background {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }
+
 .footer {
-  margin-bottom: 15px;
-  text-align: center;
   color: whitesmoke;
-  font-size: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #333;
+  display: flex;
+  align-items: center;
+  padding: 1% 10%;
+  font-size: large;
+}
+
+.footer nav{
+  flex: 1;
+  text-align: right;
+}
+
+.footer nav ul li{
+  list-style: none;
+  display: inline-block;
+  margin-left: 60px;
+  height: 25px;
+  position: relative;
+  cursor: pointer;
+}
+
+.footer nav ul li::after{
+  content: "";
+  height: 2px;
+  background-color: whitesmoke;
+  width: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  transition: 0.5s;
+}
+
+.footer nav ul li:hover::after{
+  width: 100%;
+}
+
+.container {
+  margin-left: 18%;
+  margin-right: 18%;
+  display: flex;
+  text-align: center;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; 
 }
 
 .TwoCanvas {
   border-style: solid;
+  background-color: whitesmoke;
   border-width: 1px;
-  border-radius: 1%;
-  display: block;
+  border-radius: 5px;
+  display: relative;
   overflow-y: hidden;
+  transition: transform 0.3s ease-out;
   box-shadow: 20px 20px 1px -9px rgba(0, 0, 0, 0.15);
+  background-color: rgba(0, 0, 0, 0.6);
 }
-.TwoCanvas:hover{
-  box-shadow: 20px 20px 1px -9px rgba(0, 0, 0, 0.15);
 
+.TwoCanvas:hover {
+  box-shadow: 20px 20px 1px -9px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  background-color: rgba(255, 255, 255, 1);
 }
+
 
 .divTwo {
   display: inline-block;
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.divTwoMaximized {
+  z-index: 0;
+  display: flexbox;
+}
+
+.divTwo:hover {
+  -webkit-filter: blur(0px);
+  -moz-filter: blur(0px);
+  -o-filter: blur(0px);
+  -ms-filter: blur(0px);
+  filter: blur(0px);
+}
+
+.sim-div {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  margin: 15px;
+}
+
+.sim-div h1 {
+  position: absolute;
+  left: 40%;
+  top: 25%;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+  z-index: 2;
+}
+
+.sim-div #maximize {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  background: url(icons/maximise.png);
+  width: 30px;
+  height: 30px;
+  border: none;
+  transition: transform 0.2s ease-out;
+}
+
+.sim-div #maximize:hover {
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+
+.divTwo:hover + h1  {
+  display: none;
+}
+
+.sim-title {
+  color: black;
+  /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
+  text-decoration: underline;
+}
+
+.game-info {
+  width: 820px;
+  font-size: large;
+  text-align: left;
+}
+
+#keyButton {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  background-color: white;
+  border-width: 1px;
+  border-radius: 15%;
 }

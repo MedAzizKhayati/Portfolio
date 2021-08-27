@@ -29,7 +29,7 @@ class Snake extends Project {
             this.body.push(square);
         }
         this.currentScore = this.two.makeText(`Score: ${this.body.length}`, 15, 50, { size: 20, alignment: "left" });
-        this.maxScore = this.two.makeText(`Highest Score: ${this.highestScore}`, 15, 80, { size: 20, alignment: "left" })
+        this.maxScore = this.two.makeText(`Highest Score: ${this.highestScore ? this.highestScore : 0}`, 15, 80, { size: 20, alignment: "left" })
     }
     elongate() {
         this.coords.push(this.coords[this.coords.length - 1].clone());

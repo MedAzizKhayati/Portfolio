@@ -2,31 +2,54 @@ import { Noise } from 'noisejs';
 import Project from './Project';
 
 class Sort extends Project {
+    constructor(two){
+        super(two);
+        this.id = Math.floor( Math.random() * 100 );
+        this.random = true;
+    }
     init() {
         this.two.clear();
-        this.justStarted = true;
+        this.justStarted = "justStarted";
         this.noise = new Noise(Math.random());
         this.rectWidth = 1;
         this.algorithm = null;
+        this.frameCount = - 10;
         this.length = this.width / this.rectWidth;
         this.rects = Array(this.length).fill(0).map((value, index) => {
             let rect = this.two.makeRectangle(
                 index * this.rectWidth,
                 this.height / 2,
                 this.rectWidth,
-                this.noise.perlin2(index * 0.02, 0) * this.height / 2 + this.height / 2
-                //this.height * (this.length - index) / this.length
+                this.random?
+                this.height * Math.random():
+                this.noise.perlin2(index * 0.01, 0) * this.height + this.height / 2
             );
             rect.fill = "black";
             return rect;
         })
     }
     changeState(e) {
-        if (e.code === "KeyS") {
-            this.algorithm = this.iterativeQuickSort;
-            this.algorithmState = "justStarted";
-        } else if (e.code === "KeyR") {
+        if (e.code === "KeyR") {
             this.init();
+        } else if (e.code === "KeyD" && this.two.frameCount - this.frameCount > 10) {
+            this.frameCount = this.two.frameCount;
+            this.random = ! this.random;
+            this.init();
+        } else if (e.code === "KeyA") {
+            if(this.algorithm)
+                this.init();
+            this.algorithm = this.iterativeQuickSort;
+        } else if (e.code === "KeyB") {
+            if(this.algorithm)
+                this.init();
+            this.algorithm = this.bubbleSort;
+        } else if (e.code === "KeyI") {
+            if(this.algorithm)
+                this.init();
+            this.algorithm = this.insertionSort;
+        } else if (e.code === "KeyS") {
+            for (let index = 0; index < 300; index++)
+                this.update()
         }
     }
     swap(i, j) {

@@ -10,7 +10,10 @@ class Project{
         this.two.renderer.domElement.addEventListener("mouseleave", () => this.onMouseUp());
         this.two.renderer.domElement.addEventListener("mouseup", () => this.onMouseUp());
         this.mousePos = new Anchor();
-        document.addEventListener("keydown", (e) => this.changeState(e));
+        document.addEventListener("keydown", (e) => {
+            if(document.querySelector(".TwoCanvas:hover") === this.two.renderer.domElement)
+                this.changeState(e);    
+        });
         this.intervalFunction = null;
         this.init();
         this.update = this.update.bind(this);
@@ -39,6 +42,9 @@ class Project{
     }
     update(){
         //Overwrite this Function in your project subclass 
+    }
+    toString(){
+        return "Project";
     }
 }
 export default Project;
