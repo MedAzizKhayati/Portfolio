@@ -9,16 +9,16 @@ class Snake extends Project {
     init() {
         document.addEventListener("keydown", (e) => this.moveSnake(e));
         this.size = 20;
-        this.velocity = 2;
-        this.length = 4;
+        this.velocity = 4;
+        this.length = 5;
         this.position = new Anchor(100 + this.size / 2, 120 + this.size / 2);
         this.food = this.two.makeRoundedRectangle(0, 0, this.size, this.size, 2);
         this.food.fill = "rgb(0,0,100)";
         this.food.translation = new Anchor(0, 0);
+        this.body = [];
         this.SpawnFood();
         this.coords = [this.position];
         this.vels = [];
-        this.body = [];
         for (let index = 0; index < this.length; index++) {
             if (index !== 0)
                 this.coords.push(this.position.clone().addSelf(new Anchor(-this.size * index, 0)));
@@ -57,8 +57,19 @@ class Snake extends Project {
         }
     }
     SpawnFood() {
-        let x = Math.floor(Math.random() * this.width / this.size) * this.size + this.size / 2;
-        let y = Math.floor(Math.random() * this.height / this.size) * this.size + this.size / 2;
+        var condition = true;
+        var x, y;
+        while(condition){
+            condition = false;
+            x = Math.floor(Math.random() * this.width / this.size) * this.size + this.size / 2;
+            y = Math.floor(Math.random() * this.height / this.size) * this.size + this.size / 2;
+            for (let index = 0; index < this.body.length; index++) {
+                if(!this.body[index].translation.distanceTo(new Anchor(x, y))){
+                    condition = true;
+                    break;
+                }  
+            }  
+        }      
         this.food.translation.set(x, y);
     }
     respawn() {

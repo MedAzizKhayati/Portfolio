@@ -26,9 +26,7 @@ class Moon extends Planet {
         this.velocity = velocity;
         this.planets = planets;
         this.acceleration = new Two.Anchor();
-        this.update = this.update.bind(this);
         this.trajectory = [];
-        this.two.bind('update', this.update).play();
     }
     update() {
         let collided = false;
@@ -73,6 +71,9 @@ class OrbitSim extends Project {
     }
     update() {
         this.ui.value = `Planets remaining: ${this.moons.length}`;
+        for (let index = 0; index < this.moons.length; index++) {
+            this.moons[index].update();
+        }
     }
     removeMoon(moon) {
         let index = this.moons.indexOf(moon);

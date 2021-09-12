@@ -1,6 +1,7 @@
-import Footer from './components/Footer.js';
 import React from 'react';
 import ProjectsHandler from './components/ProjectsHandler.js';
+import About from './components/About.js';
+import Navbar from './components/Navbar.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class App extends React.Component {
     }
     this.redirectToAbout = this.redirectToAbout.bind(this);
     this.redirectToHome = this.redirectToHome.bind(this);
+    document.documentElement.style.setProperty('--game-info-width', Math.floor(window.innerWidth * 0.64 / 20) * 20+'px');
   }
   redirectToHome(){
     this.setState({
@@ -24,12 +26,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Footer
+        <Navbar
           title={this.state.page === 'Home'? 'Summer Projects': 'Resume'}
           home={this.redirectToHome}
           about={this.redirectToAbout}
         />
-        {this.state.page === 'Home'? <ProjectsHandler />: <h1>Hello This is About</h1>}
+        {this.state.page === 'Home'? <ProjectsHandler />: <About/>}
       </div>
     );
   }

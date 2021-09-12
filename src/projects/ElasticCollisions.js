@@ -39,9 +39,6 @@ class MassBall {
 class ElascticCollisions extends Project {
     constructor(two) {
         super(two);
-        for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
-            this.randomBallSpawner();
-        }
     }
     randomBallSpawner(radius = -1){
         let x = Math.random() * this.width;
@@ -53,6 +50,12 @@ class ElascticCollisions extends Project {
         this.massBalls.push(new MassBall(pos, vel, radius, this.two));
     }
     init() {
+        this.reset();
+        for (let i = 0; i < Math.floor(Math.random() * 10) + 3; i++) {
+            this.randomBallSpawner();
+        }
+    }
+    reset() {
         this.two.clear();
         this.gravityIndicator = this.two.makeText(G === 0 ? "Gravity OFF" : "Gravity ON", this.two.width / 2, 15, {size: 15});
         this.frameCountAtChange = 0;
@@ -98,7 +101,7 @@ class ElascticCollisions extends Project {
         this.detectCollisions();
     }
     simulateAtoms() {
-        this.init();
+        this.reset();
         let radius = 5
         for (let i = 0; i < 100; i++) {
             this.randomBallSpawner(radius);
@@ -129,7 +132,7 @@ class ElascticCollisions extends Project {
     }
     changeState(e) {
         if (e.code === "KeyR") {
-            this.init();
+            this.reset();
         } else if (e.code === "KeyG") {
             if (this.two.frameCount - this.frameCountAtChange > 10) {
                 G = G === 0 ? 0.1 : 0;

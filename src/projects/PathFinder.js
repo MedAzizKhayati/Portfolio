@@ -19,14 +19,12 @@ class PathFinder extends Project {
         this.state = "drawing";
         this.algorithm = null
         this.grid = [];
-        if (!this.size) {
-            this.size = 20;
-            this.algorithmState = "justStarted";
-            this.intervalFunction = this.draw;
-            this.gridHeight = this.height / this.size;
-            this.gridWidth = this.width / this.size;
-            this.lineGroup = new Two.Group();
-        }
+        this.size = 20;
+        this.algorithmState = "justStarted";
+        this.intervalFunction = this.draw;
+        this.gridHeight = this.height / this.size;
+        this.gridWidth = this.width / this.size;
+        this.lineGroup = new Two.Group();
         if (this.lineGroup.children.length < this.gridWidth * this.gridHeight) {
             for (let i = 0; i < this.gridWidth; i++) {
                 this.grid.push([]);

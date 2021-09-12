@@ -23,20 +23,20 @@ class ProjectCard extends React.Component {
                     />
                     <button id="maximize" onClick={() => this.props.onClick()}></button>
                 </div>
-                {Array(1).fill(0).map(() => {if(! this.state.maximized) return <h1>Paused</h1>;})}
+                {Array(1).fill(0).map(() => {if(! this.state.maximized) return <h1 key='Paused'>Paused</h1>;})}
                 <h2 className="sim-title" style= {this.state.style}>{project.title}</h2>
                 <div className="game-info" style={this.state.gameInfoStyle}>
                     <p>About: {project.description}</p>
                     {Object.keys(project.tips).map(key => {
                         if(key == "tips")
-                            return (<p>Tips: {project.tips[key]}</p>)
+                            return (<p key={key}>Tips: {project.tips[key]}</p>)
                         else{
                             return (
-                                <div style={{display: "flex", alignItems:"center"}}>
+                                <div key={key} style={{display: "flex", alignItems:"center"}}>
                                     <button id="keyButton">{key}</button>
-                                    <p>{project.tips[key]}</p>
+                                    <p >{project.tips[key]}</p>
                                 </div>
-                            )
+                            );
                         }
                     })}
                 </div>       

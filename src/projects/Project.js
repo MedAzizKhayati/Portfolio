@@ -1,7 +1,8 @@
 import Two, { Anchor } from "twojs-ts";
 
-class Project{
-    constructor(two){
+class Project {
+    static instance = null;
+    constructor(two) {
         this.two = two;
         this.width = this.two.width;
         this.height = this.two.height;
@@ -11,40 +12,49 @@ class Project{
         this.two.renderer.domElement.addEventListener("mouseup", () => this.onMouseUp());
         this.mousePos = new Anchor();
         document.addEventListener("keydown", (e) => {
-            if(document.querySelector(".TwoCanvas:hover") === this.two.renderer.domElement)
-                this.changeState(e);    
+            if (document.querySelector(".TwoCanvas:hover") === this.two.renderer.domElement)
+                this.changeState(e);
         });
         this.intervalFunction = null;
         this.init();
         this.update = this.update.bind(this);
         this.two.bind('update', this.update);
     }
-    changeState(e){
-
+    changeState(e) {
+        
     }
-    onMouseMove(e){
+    onMouseMove(e) {
         this.mx = e.clientX - this.two.renderer.domElement.getBoundingClientRect().left;
         this.my = e.clientY - this.two.renderer.domElement.getBoundingClientRect().top;
         this.mousePos.set(this.mx, this.my);
     }
     onMouseDown() {
-        if(this.intervalFunction)
+        if (this.intervalFunction)
             this.interval = setInterval(() => this.intervalFunction(), 10);
     }
     onMouseUp() {
         clearInterval(this.interval);
         this.interval = false;
     }
-    init(){
+    init() {
         //Overwrite this init function in your project subclass to initialise your simulation
-        let text = new Two.Text('Two Projects', this.width / 2, this.height /2, {size: 30});
+        let text = new Two.Text('Two Projects', this.width / 2, this.height / 2, { size: 30 });
         this.two.add(text);
     }
-    update(){
+    update() {
         //Overwrite this Function in your project subclass 
     }
-    toString(){
+    toString() {
         return "Project";
+    }
+    static isInstanciated(){
+        return this.instance;
+    }
+    static getInstance(two) {
+        if(!this.instance){
+            this.instance = new this(two);
+        }
+        return this.instance;
     }
 }
 export default Project;
