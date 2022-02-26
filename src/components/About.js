@@ -25,7 +25,7 @@ class About extends React.Component {
     }
     onScroll() {
         let elements = document.querySelectorAll('.skill-bar');
-        let percentages = [70, 80, 85, 80, 95, 85, 60, 30];
+        let percentages = [90, 75, 80, 85, 95, 90, 60, 30];
         for (let index = 0; index < elements.length; index++) {
             let element = elements[index];
             if (isInViewport(element)) {

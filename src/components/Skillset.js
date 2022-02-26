@@ -16,10 +16,10 @@ class Skillset extends React.Component{
                     <div className="expertise">
                         <h1>My Expertise</h1>
                     </div>
-                    <SkillBar skills='C/C++'/>
-                    <SkillBar skills='Java'/>
-                    <SkillBar skills='Python'/>
-                    <SkillBar skills='Web Dev (HTML, JavaScript, CSS, Symfony, React)'/>
+                    <SkillBar skills='C/C++/C#/R/Javascript/Java/Python'/>
+                    <SkillBar skills='UML'/>
+                    <SkillBar skills='Scrum Methodologies (Agile)'/>
+                    <SkillBar skills='Fullstack Web/Mobile Dev (Symfony, React, SQL, Spring Boot, JEE, Flask, NestJs)'/>
                 </div>
                 <ScrollButton 
                     scroll= {this.props.scroll}
