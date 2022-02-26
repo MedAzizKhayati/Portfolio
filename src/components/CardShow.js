@@ -18,6 +18,24 @@ class CardShow extends React.Component {
         this.myRef = React.createRef();
         this.data = [
             new Data(
+                'Remote Software Engineer',
+                'Junk Doctors, LLC - North Carolina',
+                [
+                    'In this experience, I got to work on my PHP skills and improve them while making projects for the company',
+                    "I've used Ajax and Google API's to export some functionalities for their website like organising events in google calender, \
+                    also accessing emails via the Gmail API and communicating with the google drive api to look through the files and download them."
+                ]
+            ),
+            new Data(
+                'Remote Freelancer',
+                'Fiverr and Preply - Online',
+                [
+                    'In this experience, I got to work with many people on multiple domains and projects related to computer science.',
+                    "I've given more than 150 lessons on Preply about python with everyone satisfied (5 stars).",
+                    "On fiverr I worked on more than 125 projects and with more than 75 5 stars' ratings."
+                ]
+            ),
+            new Data(
                 'Exchange Participant (Speaking Club)',
                 'AIESEC – Eskisehir, Turkey',
                 [
@@ -49,6 +67,7 @@ class CardShow extends React.Component {
                     'We made a wireless controlled robot that can hold and store objects in its trunk.'
                 ]
             ),
+            
         ];
     }
     render() { 

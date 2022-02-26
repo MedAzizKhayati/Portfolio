@@ -1,5 +1,5 @@
 import React from 'react';
-import cv from '../assets/files/CV-Med-Aziz-Khayati.docx'
+import cv from '../assets/files/CV-Med-Aziz-Khayati.pdf'
 import coder from '../assets/images/coder.png'
 import ScrollButton from './ScrollButton';
 import profile from '../assets/icons/profile.png'
